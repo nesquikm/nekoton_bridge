@@ -1,10 +1,10 @@
-
 import 'dart:async';
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:isolate';
 
 import 'flutter_nekoton_bridge_bindings_generated.dart';
+export 'package:nekoton_bridge/nekoton_bridge.dart';
 
 /// A very short-lived native function.
 ///
@@ -51,7 +51,6 @@ final DynamicLibrary _dylib = () {
 
 /// The bindings to the native functions in [_dylib].
 final FlutterNekotonBridgeBindings _bindings = FlutterNekotonBridgeBindings(_dylib);
-
 
 /// A request to compute `sum`.
 ///
