@@ -14,8 +14,8 @@ dependencies:
   nekoton_bridge: ^1.0.0
 
 dev_dependencies:
-  ffi: ^1.2.1
-  ffigen: ^5.0.1
+  ffi: ^2.0.1
+  ffigen: ^7.2.4
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
