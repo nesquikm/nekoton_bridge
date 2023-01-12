@@ -33,7 +33,7 @@ Future<int> sumAsync(int a, int b) async {
   return completer.future;
 }
 
-const String _libName = 'flutter_nekoton_bridge';
+const String _libName = 'nekoton_bridge';
 
 /// The dynamic library in which the symbols for [FlutterNekotonBridgeBindings] can be found.
 final DynamicLibrary _dylib = () {
