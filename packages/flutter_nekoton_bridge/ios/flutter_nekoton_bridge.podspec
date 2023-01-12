@@ -49,7 +49,7 @@ cd -
 `
 
 Pod::Spec.new do |spec|
-  spec.name          = 'nekoton_bridge'
+  spec.name          = 'flutter_nekoton_bridge'
   spec.version       = '0.0.1'
   spec.license       = { :file => '../LICENSE' }
   spec.homepage      = 'https://github.com/nesquikm/nekoton_bridge'
