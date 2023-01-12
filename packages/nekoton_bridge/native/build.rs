@@ -6,7 +6,7 @@ const RUST_INPUT: &str = "src/api.rs";
 const DART_OUTPUT: &str = "../lib/src/bridge_generated.dart";
 
 const IOS_C_OUTPUT: &str = "../../flutter_nekoton_bridge/ios/Classes/frb.h";
-const MACOS_C_OUTPUT: &str = "../../flutter_nekoton_bridge/macos/Classes/frb.h";
+// const MACOS_C_OUTPUT: &str = "../../flutter_nekoton_bridge/macos/Classes/frb.h";
 
 fn main() {
     // Tell Cargo that if the input Rust code changes, rerun this build script
@@ -16,7 +16,9 @@ fn main() {
     let raw_opts = RawOpts {
         rust_input: vec![RUST_INPUT.to_string()],
         dart_output: vec![DART_OUTPUT.to_string()],
-        c_output: Some(vec![IOS_C_OUTPUT.to_string(), MACOS_C_OUTPUT.to_string()]),
+        c_output: Some(vec![IOS_C_OUTPUT.to_string()]),
+        // TODO: add output for macOS
+        // c_output: Some(vec![IOS_C_OUTPUT.to_string(), MACOS_C_OUTPUT.to_string()]),
         inline_rust: true,
         wasm: true,
         ..Default::default()
