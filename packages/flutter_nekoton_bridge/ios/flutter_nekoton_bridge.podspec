@@ -32,12 +32,15 @@ release_tag_name = 'nekoton_bridge-v0.0.0' # generated; do not edit
 # We cannot distribute the XCFramework alongside the library directly,
 # so we have to fetch the correct version here.
 framework_name = 'NekotonBridge.xcframework'
+local_build_zip_name = "../../../../platform-build/#{framework_name}.zip"
 remote_zip_name = "#{framework_name}.zip"
 url = "https://github.com/nesquikm/nekoton_bridge/releases/download/#{release_tag_name}/#{remote_zip_name}"
 local_zip_name = "#{release_tag_name}.zip"
 `
 cd Frameworks
 rm -rf #{framework_name}
+
+cp -f #{local_build_zip_name} #{local_zip_name}
 
 if [ ! -f #{local_zip_name} ]
 then
