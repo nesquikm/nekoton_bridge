@@ -14,7 +14,15 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'bridge_generated.io.dart'
     if (dart.library.html) 'bridge_generated.web.dart';
 
-abstract class NekotonBridge {}
+abstract class NekotonBridge {
+  int simpleAdderSync({required int a, required int b, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kSimpleAdderSyncConstMeta;
+
+  Future<int> simpleAdder({required int a, required int b, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kSimpleAdderConstMeta;
+}
 
 class NekotonBridgeImpl implements NekotonBridge {
   final NekotonBridgePlatform _platform;
@@ -25,13 +33,56 @@ class NekotonBridgeImpl implements NekotonBridge {
   factory NekotonBridgeImpl.wasm(FutureOr<WasmModule> module) =>
       NekotonBridgeImpl(module as ExternalLibrary);
   NekotonBridgeImpl.raw(this._platform);
+  int simpleAdderSync({required int a, required int b, dynamic hint}) {
+    var arg0 = api2wire_i32(a);
+    var arg1 = api2wire_i32(b);
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_simple_adder_sync(arg0, arg1),
+      parseSuccessData: _wire2api_i32,
+      constMeta: kSimpleAdderSyncConstMeta,
+      argValues: [a, b],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kSimpleAdderSyncConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "simple_adder_sync",
+        argNames: ["a", "b"],
+      );
+
+  Future<int> simpleAdder({required int a, required int b, dynamic hint}) {
+    var arg0 = api2wire_i32(a);
+    var arg1 = api2wire_i32(b);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_simple_adder(port_, arg0, arg1),
+      parseSuccessData: _wire2api_i32,
+      constMeta: kSimpleAdderConstMeta,
+      argValues: [a, b],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kSimpleAdderConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "simple_adder",
+        argNames: ["a", "b"],
+      );
+
   void dispose() {
     _platform.dispose();
   }
 // Section: wire2api
 
+  int _wire2api_i32(dynamic raw) {
+    return raw as int;
+  }
 }
 
 // Section: api2wire
 
+@protected
+int api2wire_i32(int raw) {
+  return raw;
+}
 // Section: finalizer

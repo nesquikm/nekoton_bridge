@@ -33,6 +33,10 @@ external NekotonBridgeWasmModule get wasmModule;
 class NekotonBridgeWasmModule implements WasmModule {
   external Object /* Promise */ call([String? moduleName]);
   external NekotonBridgeWasmModule bind(dynamic thisArg, String moduleName);
+  external dynamic /* int */ wire_simple_adder_sync(int a, int b);
+
+  external dynamic /* void */ wire_simple_adder(
+      NativePortType port_, int a, int b);
 }
 
 // Section: WASM wire connector
@@ -41,4 +45,10 @@ class NekotonBridgeWire
     extends FlutterRustBridgeWasmWireBase<NekotonBridgeWasmModule> {
   NekotonBridgeWire(FutureOr<WasmModule> module)
       : super(WasmModule.cast<NekotonBridgeWasmModule>(module));
+
+  dynamic /* int */ wire_simple_adder_sync(int a, int b) =>
+      wasmModule.wire_simple_adder_sync(a, b);
+
+  void wire_simple_adder(NativePortType port_, int a, int b) =>
+      wasmModule.wire_simple_adder(port_, a, b);
 }

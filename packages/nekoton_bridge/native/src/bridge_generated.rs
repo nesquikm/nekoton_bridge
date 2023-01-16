@@ -21,6 +21,41 @@ use std::sync::Arc;
 
 // Section: wire functions
 
+fn wire_simple_adder_sync_impl(
+    a: impl Wire2Api<i32> + UnwindSafe,
+    b: impl Wire2Api<i32> + UnwindSafe,
+) -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "simple_adder_sync",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || {
+            let api_a = a.wire2api();
+            let api_b = b.wire2api();
+            Ok(simple_adder_sync(api_a, api_b))
+        },
+    )
+}
+fn wire_simple_adder_impl(
+    port_: MessagePort,
+    a: impl Wire2Api<i32> + UnwindSafe,
+    b: impl Wire2Api<i32> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "simple_adder",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_a = a.wire2api();
+            let api_b = b.wire2api();
+            move |task_callback| Ok(simple_adder(api_a, api_b))
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks
@@ -43,6 +78,11 @@ where
         (!self.is_null()).then(|| self.wire2api())
     }
 }
+impl Wire2Api<i32> for i32 {
+    fn wire2api(self) -> i32 {
+        self
+    }
+}
 // Section: impl IntoDart
 
 // Section: executor
@@ -57,6 +97,16 @@ mod web {
     use super::*;
     // Section: wire functions
 
+    #[wasm_bindgen]
+    pub fn wire_simple_adder_sync(a: i32, b: i32) -> support::WireSyncReturn {
+        wire_simple_adder_sync_impl(a, b)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_simple_adder(port_: MessagePort, a: i32, b: i32) {
+        wire_simple_adder_impl(port_, a, b)
+    }
+
     // Section: allocate functions
 
     // Section: related functions
@@ -64,6 +114,12 @@ mod web {
     // Section: impl Wire2Api
 
     // Section: impl Wire2Api for JsValue
+
+    impl Wire2Api<i32> for JsValue {
+        fn wire2api(self) -> i32 {
+            self.unchecked_into_f64() as _
+        }
+    }
 }
 #[cfg(target_family = "wasm")]
 pub use web::*;
@@ -72,6 +128,16 @@ pub use web::*;
 mod io {
     use super::*;
     // Section: wire functions
+
+    #[no_mangle]
+    pub extern "C" fn wire_simple_adder_sync(a: i32, b: i32) -> support::WireSyncReturn {
+        wire_simple_adder_sync_impl(a, b)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_simple_adder(port_: i64, a: i32, b: i32) {
+        wire_simple_adder_impl(port_, a, b)
+    }
 
     // Section: allocate functions
 

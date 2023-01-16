@@ -21,10 +21,16 @@ uintptr_t new_dart_opaque(Dart_Handle handle);
 
 intptr_t init_frb_dart_api_dl(void *obj);
 
+WireSyncReturn wire_simple_adder_sync(int32_t a, int32_t b);
+
+void wire_simple_adder(int64_t port_, int32_t a, int32_t b);
+
 void free_WireSyncReturn(WireSyncReturn ptr);
 
 static int64_t dummy_method_to_enforce_bundling(void) {
     int64_t dummy_var = 0;
+    dummy_var ^= ((int64_t) (void*) wire_simple_adder_sync);
+    dummy_var ^= ((int64_t) (void*) wire_simple_adder);
     dummy_var ^= ((int64_t) (void*) free_WireSyncReturn);
     dummy_var ^= ((int64_t) (void*) store_dart_post_cobject);
     dummy_var ^= ((int64_t) (void*) get_dart_object);
