@@ -17,12 +17,18 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late int sumResult;
   late Future<int> sumAsyncResult;
+  String? fromMyClass;
 
   @override
   void initState() {
     super.initState();
     sumResult = flutter_nekoton_bridge.simpleAdderSync(1, 2);
     sumAsyncResult = flutter_nekoton_bridge.simpleAdder(3, 4);
+  }
+
+  void _onPressed() async {
+    fromMyClass = await flutter_nekoton_bridge.queryMyClass();
+    setState(() {});
   }
 
   @override
@@ -63,6 +69,7 @@ class _MyAppState extends State<MyApp> {
                     );
                   },
                 ),
+                TextButton(onPressed: _onPressed, child: Text('From MyClass $fromMyClass')),
               ],
             ),
           ),

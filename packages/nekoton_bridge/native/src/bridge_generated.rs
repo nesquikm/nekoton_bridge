@@ -56,6 +56,35 @@ fn wire_simple_adder_impl(
         },
     )
 }
+fn wire_new__static_method__MyClass_impl(port_: MessagePort, a: impl Wire2Api<i32> + UnwindSafe) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "new__static_method__MyClass",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_a = a.wire2api();
+            move |task_callback| Ok(MyClass::new(api_a))
+        },
+    )
+}
+fn wire_my_format__method__MyClass_impl(
+    port_: MessagePort,
+    that: impl Wire2Api<MyClass> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "my_format__method__MyClass",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.wire2api();
+            move |task_callback| Ok(MyClass::my_format(&api_that))
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks
@@ -78,12 +107,21 @@ where
         (!self.is_null()).then(|| self.wire2api())
     }
 }
+
 impl Wire2Api<i32> for i32 {
     fn wire2api(self) -> i32 {
         self
     }
 }
+
 // Section: impl IntoDart
+
+impl support::IntoDart for MyClass {
+    fn into_dart(self) -> support::DartAbi {
+        vec![self.val.into_dart()].into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for MyClass {}
 
 // Section: executor
 
@@ -107,12 +145,36 @@ mod web {
         wire_simple_adder_impl(port_, a, b)
     }
 
+    #[wasm_bindgen]
+    pub fn wire_new__static_method__MyClass(port_: MessagePort, a: i32) {
+        wire_new__static_method__MyClass_impl(port_, a)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_my_format__method__MyClass(port_: MessagePort, that: JsValue) {
+        wire_my_format__method__MyClass_impl(port_, that)
+    }
+
     // Section: allocate functions
 
     // Section: related functions
 
     // Section: impl Wire2Api
 
+    impl Wire2Api<MyClass> for JsValue {
+        fn wire2api(self) -> MyClass {
+            let self_ = self.dyn_into::<JsArray>().unwrap();
+            assert_eq!(
+                self_.length(),
+                1,
+                "Expected 1 elements, got {}",
+                self_.length()
+            );
+            MyClass {
+                val: self_.get(0).wire2api(),
+            }
+        }
+    }
     // Section: impl Wire2Api for JsValue
 
     impl Wire2Api<i32> for JsValue {
@@ -139,13 +201,48 @@ mod io {
         wire_simple_adder_impl(port_, a, b)
     }
 
+    #[no_mangle]
+    pub extern "C" fn wire_new__static_method__MyClass(port_: i64, a: i32) {
+        wire_new__static_method__MyClass_impl(port_, a)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_my_format__method__MyClass(port_: i64, that: *mut wire_MyClass) {
+        wire_my_format__method__MyClass_impl(port_, that)
+    }
+
     // Section: allocate functions
+
+    #[no_mangle]
+    pub extern "C" fn new_box_autoadd_my_class_0() -> *mut wire_MyClass {
+        support::new_leak_box_ptr(wire_MyClass::new_with_null_ptr())
+    }
 
     // Section: related functions
 
     // Section: impl Wire2Api
 
+    impl Wire2Api<MyClass> for *mut wire_MyClass {
+        fn wire2api(self) -> MyClass {
+            let wrap = unsafe { support::box_from_leak_ptr(self) };
+            Wire2Api::<MyClass>::wire2api(*wrap).into()
+        }
+    }
+
+    impl Wire2Api<MyClass> for wire_MyClass {
+        fn wire2api(self) -> MyClass {
+            MyClass {
+                val: self.val.wire2api(),
+            }
+        }
+    }
     // Section: wire structs
+
+    #[repr(C)]
+    #[derive(Clone)]
+    pub struct wire_MyClass {
+        val: i32,
+    }
 
     // Section: impl NewWithNullPtr
 
@@ -156,6 +253,14 @@ mod io {
     impl<T> NewWithNullPtr for *mut T {
         fn new_with_null_ptr() -> Self {
             std::ptr::null_mut()
+        }
+    }
+
+    impl NewWithNullPtr for wire_MyClass {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                val: Default::default(),
+            }
         }
     }
 

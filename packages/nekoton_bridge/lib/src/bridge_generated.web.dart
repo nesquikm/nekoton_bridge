@@ -19,6 +19,15 @@ class NekotonBridgePlatform extends FlutterRustBridgeBase<NekotonBridgeWire>
 
 // Section: api2wire
 
+  @protected
+  List<dynamic> api2wire_box_autoadd_my_class(MyClass raw) {
+    return api2wire_my_class(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_my_class(MyClass raw) {
+    return [api2wire_i32(raw.val)];
+  }
 // Section: finalizer
 
 }
@@ -37,6 +46,12 @@ class NekotonBridgeWasmModule implements WasmModule {
 
   external dynamic /* void */ wire_simple_adder(
       NativePortType port_, int a, int b);
+
+  external dynamic /* void */ wire_new__static_method__MyClass(
+      NativePortType port_, int a);
+
+  external dynamic /* void */ wire_my_format__method__MyClass(
+      NativePortType port_, List<dynamic> that);
 }
 
 // Section: WASM wire connector
@@ -51,4 +66,11 @@ class NekotonBridgeWire
 
   void wire_simple_adder(NativePortType port_, int a, int b) =>
       wasmModule.wire_simple_adder(port_, a, b);
+
+  void wire_new__static_method__MyClass(NativePortType port_, int a) =>
+      wasmModule.wire_new__static_method__MyClass(port_, a);
+
+  void wire_my_format__method__MyClass(
+          NativePortType port_, List<dynamic> that) =>
+      wasmModule.wire_my_format__method__MyClass(port_, that);
 }

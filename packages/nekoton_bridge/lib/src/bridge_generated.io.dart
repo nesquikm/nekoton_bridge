@@ -16,10 +16,25 @@ class NekotonBridgePlatform extends FlutterRustBridgeBase<NekotonBridgeWire> {
 
 // Section: api2wire
 
+  @protected
+  ffi.Pointer<wire_MyClass> api2wire_box_autoadd_my_class(MyClass raw) {
+    final ptr = inner.new_box_autoadd_my_class_0();
+    _api_fill_to_wire_my_class(raw, ptr.ref);
+    return ptr;
+  }
+
 // Section: finalizer
 
 // Section: api_fill_to_wire
 
+  void _api_fill_to_wire_box_autoadd_my_class(
+      MyClass apiObj, ffi.Pointer<wire_MyClass> wireObj) {
+    _api_fill_to_wire_my_class(apiObj, wireObj.ref);
+  }
+
+  void _api_fill_to_wire_my_class(MyClass apiObj, wire_MyClass wireObj) {
+    wireObj.val = api2wire_i32(apiObj.val);
+  }
 }
 
 // ignore_for_file: camel_case_types, non_constant_identifier_names, avoid_positional_boolean_parameters, annotate_overrides, constant_identifier_names
@@ -152,6 +167,51 @@ class NekotonBridgeWire implements FlutterRustBridgeWireBase {
   late final _wire_simple_adder =
       _wire_simple_adderPtr.asFunction<void Function(int, int, int)>();
 
+  void wire_new__static_method__MyClass(
+    int port_,
+    int a,
+  ) {
+    return _wire_new__static_method__MyClass(
+      port_,
+      a,
+    );
+  }
+
+  late final _wire_new__static_method__MyClassPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Int32)>>(
+          'wire_new__static_method__MyClass');
+  late final _wire_new__static_method__MyClass =
+      _wire_new__static_method__MyClassPtr
+          .asFunction<void Function(int, int)>();
+
+  void wire_my_format__method__MyClass(
+    int port_,
+    ffi.Pointer<wire_MyClass> that,
+  ) {
+    return _wire_my_format__method__MyClass(
+      port_,
+      that,
+    );
+  }
+
+  late final _wire_my_format__method__MyClassPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64,
+              ffi.Pointer<wire_MyClass>)>>('wire_my_format__method__MyClass');
+  late final _wire_my_format__method__MyClass =
+      _wire_my_format__method__MyClassPtr
+          .asFunction<void Function(int, ffi.Pointer<wire_MyClass>)>();
+
+  ffi.Pointer<wire_MyClass> new_box_autoadd_my_class_0() {
+    return _new_box_autoadd_my_class_0();
+  }
+
+  late final _new_box_autoadd_my_class_0Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_MyClass> Function()>>(
+          'new_box_autoadd_my_class_0');
+  late final _new_box_autoadd_my_class_0 = _new_box_autoadd_my_class_0Ptr
+      .asFunction<ffi.Pointer<wire_MyClass> Function()>();
+
   void free_WireSyncReturn(
     WireSyncReturn ptr,
   ) {
@@ -168,6 +228,11 @@ class NekotonBridgeWire implements FlutterRustBridgeWireBase {
 }
 
 class _Dart_Handle extends ffi.Opaque {}
+
+class wire_MyClass extends ffi.Struct {
+  @ffi.Int32()
+  external int val;
+}
 
 typedef DartPostCObjectFnType = ffi.Pointer<
     ffi.NativeFunction<ffi.Bool Function(DartPort, ffi.Pointer<ffi.Void>)>>;
