@@ -56,7 +56,7 @@ melos run clean
 
 ## Example 🤡
 
-You can find dumbest example in `packages/flutter_nekoton_bridge/example`.
+You can find dumbest example in `packages/flutter_nekoton_bridge/example`. During build scripts will copy platform-specific binaries from `platform-build/` folder, or download prebuild binaries from github (if you don't build binaries locally).
 
 You can open the project in Android studio or Visual studio code, or even build and run it using `flutter run`.
 
