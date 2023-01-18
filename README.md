@@ -14,10 +14,14 @@ Then your adventure continues by installing dependencies:
 cargo install flutter_rust_bridge_codegen
 flutter pub add --dev ffigen && flutter pub add ffi
 cargo install cargo-xcode
-flutter pub add flutter_rust_bridge
-flutter pub add -d build_runner
-flutter pub add -d freezed
-flutter pub add freezed_annotation
+rustup target add \
+    aarch64-linux-android \
+    armv7-linux-androideabi \
+    x86_64-linux-android \
+    i686-linux-android
+cargo install cargo-ndk --version 2.6.0
+rustup target add aarch64-apple-ios x86_64-apple-ios
+rustup target add aarch64-apple-ios-sim
 dart pub global activate melos
 ```
 
