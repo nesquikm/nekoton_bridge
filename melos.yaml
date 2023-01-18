@@ -55,3 +55,7 @@ scripts:
     select-package:
       flutter: true
       dir-exists: test
+
+  clean:
+    run: bash scripts/clean.sh
+    description: Clean all
