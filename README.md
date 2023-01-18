@@ -51,7 +51,7 @@ You can find `platform-build/NekotonBridge.xcframework.zip` and `platform-build/
 Just run commands below to clean all, including build directories and flutter projects.
 
 ```
-melos run clean
+melos clean
 ```
 
 ## Example 🤡
