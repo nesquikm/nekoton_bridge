@@ -4,8 +4,7 @@ import 'package:nekoton_bridge/nekoton_bridge.dart';
 
 typedef ExternalLibrary = WasmModule;
 
-NekotonBridge createWrapperImpl(ExternalLibrary module) =>
-    NekotonBridgeImpl.wasm(module);
+NekotonBridge createWrapperImpl(ExternalLibrary module) => NekotonBridgeImpl.wasm(module);
 
 WasmModule createLibraryImpl() {
   // TODO add web support. See:

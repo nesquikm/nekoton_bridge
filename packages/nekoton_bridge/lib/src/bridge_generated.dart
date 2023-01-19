@@ -11,8 +11,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
-import 'bridge_generated.io.dart'
-    if (dart.library.html) 'bridge_generated.web.dart';
+import 'bridge_generated.io.dart' if (dart.library.html) 'bridge_generated.web.dart';
 
 abstract class NekotonBridge {
   int simpleAdderSync({required int a, required int b, dynamic hint});
@@ -41,8 +40,7 @@ class MyClass {
     required this.val,
   });
 
-  static Future<MyClass> newMyClass(
-          {required NekotonBridge bridge, required int a, dynamic hint}) =>
+  static Future<MyClass> newMyClass({required NekotonBridge bridge, required int a, dynamic hint}) =>
       bridge.newStaticMethodMyClass(a: a, hint: hint);
 
   Future<String> myFormat({dynamic hint}) => bridge.myFormatMethodMyClass(
@@ -52,12 +50,10 @@ class MyClass {
 
 class NekotonBridgeImpl implements NekotonBridge {
   final NekotonBridgePlatform _platform;
-  factory NekotonBridgeImpl(ExternalLibrary dylib) =>
-      NekotonBridgeImpl.raw(NekotonBridgePlatform(dylib));
+  factory NekotonBridgeImpl(ExternalLibrary dylib) => NekotonBridgeImpl.raw(NekotonBridgePlatform(dylib));
 
   /// Only valid on web/WASM platforms.
-  factory NekotonBridgeImpl.wasm(FutureOr<WasmModule> module) =>
-      NekotonBridgeImpl(module as ExternalLibrary);
+  factory NekotonBridgeImpl.wasm(FutureOr<WasmModule> module) => NekotonBridgeImpl(module as ExternalLibrary);
   NekotonBridgeImpl.raw(this._platform);
   int simpleAdderSync({required int a, required int b, dynamic hint}) {
     var arg0 = api2wire_i32(a);
@@ -71,8 +67,7 @@ class NekotonBridgeImpl implements NekotonBridge {
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kSimpleAdderSyncConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kSimpleAdderSyncConstMeta => const FlutterRustBridgeTaskConstMeta(
         debugName: "simple_adder_sync",
         argNames: ["a", "b"],
       );
@@ -89,8 +84,7 @@ class NekotonBridgeImpl implements NekotonBridge {
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kSimpleAdderConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kSimpleAdderConstMeta => const FlutterRustBridgeTaskConstMeta(
         debugName: "simple_adder",
         argNames: ["a", "b"],
       );
@@ -98,8 +92,7 @@ class NekotonBridgeImpl implements NekotonBridge {
   Future<MyClass> newStaticMethodMyClass({required int a, dynamic hint}) {
     var arg0 = api2wire_i32(a);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) =>
-          _platform.inner.wire_new__static_method__MyClass(port_, arg0),
+      callFfi: (port_) => _platform.inner.wire_new__static_method__MyClass(port_, arg0),
       parseSuccessData: (d) => _wire2api_my_class(d),
       constMeta: kNewStaticMethodMyClassConstMeta,
       argValues: [a],
@@ -107,8 +100,7 @@ class NekotonBridgeImpl implements NekotonBridge {
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kNewStaticMethodMyClassConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kNewStaticMethodMyClassConstMeta => const FlutterRustBridgeTaskConstMeta(
         debugName: "new__static_method__MyClass",
         argNames: ["a"],
       );
@@ -116,8 +108,7 @@ class NekotonBridgeImpl implements NekotonBridge {
   Future<String> myFormatMethodMyClass({required MyClass that, dynamic hint}) {
     var arg0 = _platform.api2wire_box_autoadd_my_class(that);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) =>
-          _platform.inner.wire_my_format__method__MyClass(port_, arg0),
+      callFfi: (port_) => _platform.inner.wire_my_format__method__MyClass(port_, arg0),
       parseSuccessData: _wire2api_String,
       constMeta: kMyFormatMethodMyClassConstMeta,
       argValues: [that],
@@ -125,8 +116,7 @@ class NekotonBridgeImpl implements NekotonBridge {
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kMyFormatMethodMyClassConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kMyFormatMethodMyClassConstMeta => const FlutterRustBridgeTaskConstMeta(
         debugName: "my_format__method__MyClass",
         argNames: ["that"],
       );
@@ -146,8 +136,7 @@ class NekotonBridgeImpl implements NekotonBridge {
 
   MyClass _wire2api_my_class(dynamic raw) {
     final arr = raw as List<dynamic>;
-    if (arr.length != 1)
-      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    if (arr.length != 1) throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
     return MyClass(
       bridge: this,
       val: _wire2api_i32(arr[0]),

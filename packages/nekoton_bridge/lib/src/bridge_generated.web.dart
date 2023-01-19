@@ -9,10 +9,8 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'bridge_generated.dart';
 export 'bridge_generated.dart';
 
-class NekotonBridgePlatform extends FlutterRustBridgeBase<NekotonBridgeWire>
-    with FlutterRustBridgeSetupMixin {
-  NekotonBridgePlatform(FutureOr<WasmModule> dylib)
-      : super(NekotonBridgeWire(dylib)) {
+class NekotonBridgePlatform extends FlutterRustBridgeBase<NekotonBridgeWire> with FlutterRustBridgeSetupMixin {
+  NekotonBridgePlatform(FutureOr<WasmModule> dylib) : super(NekotonBridgeWire(dylib)) {
     setupMixinConstructor();
   }
   Future<void> setup() => inner.init;
@@ -44,33 +42,25 @@ class NekotonBridgeWasmModule implements WasmModule {
   external NekotonBridgeWasmModule bind(dynamic thisArg, String moduleName);
   external dynamic /* int */ wire_simple_adder_sync(int a, int b);
 
-  external dynamic /* void */ wire_simple_adder(
-      NativePortType port_, int a, int b);
+  external dynamic /* void */ wire_simple_adder(NativePortType port_, int a, int b);
 
-  external dynamic /* void */ wire_new__static_method__MyClass(
-      NativePortType port_, int a);
+  external dynamic /* void */ wire_new__static_method__MyClass(NativePortType port_, int a);
 
-  external dynamic /* void */ wire_my_format__method__MyClass(
-      NativePortType port_, List<dynamic> that);
+  external dynamic /* void */ wire_my_format__method__MyClass(NativePortType port_, List<dynamic> that);
 }
 
 // Section: WASM wire connector
 
-class NekotonBridgeWire
-    extends FlutterRustBridgeWasmWireBase<NekotonBridgeWasmModule> {
-  NekotonBridgeWire(FutureOr<WasmModule> module)
-      : super(WasmModule.cast<NekotonBridgeWasmModule>(module));
+class NekotonBridgeWire extends FlutterRustBridgeWasmWireBase<NekotonBridgeWasmModule> {
+  NekotonBridgeWire(FutureOr<WasmModule> module) : super(WasmModule.cast<NekotonBridgeWasmModule>(module));
 
-  dynamic /* int */ wire_simple_adder_sync(int a, int b) =>
-      wasmModule.wire_simple_adder_sync(a, b);
+  dynamic /* int */ wire_simple_adder_sync(int a, int b) => wasmModule.wire_simple_adder_sync(a, b);
 
-  void wire_simple_adder(NativePortType port_, int a, int b) =>
-      wasmModule.wire_simple_adder(port_, a, b);
+  void wire_simple_adder(NativePortType port_, int a, int b) => wasmModule.wire_simple_adder(port_, a, b);
 
   void wire_new__static_method__MyClass(NativePortType port_, int a) =>
       wasmModule.wire_new__static_method__MyClass(port_, a);
 
-  void wire_my_format__method__MyClass(
-          NativePortType port_, List<dynamic> that) =>
+  void wire_my_format__method__MyClass(NativePortType port_, List<dynamic> that) =>
       wasmModule.wire_my_format__method__MyClass(port_, that);
 }
