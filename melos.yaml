@@ -39,7 +39,7 @@ scripts:
     description: Build the .tar.gz for all other platforms.
 
   test:
-    run: melos run test:dart --no-select && melos run test:flutter --no-select && melos run test:integration --no-select
+    run: melos run test:dart --no-select && melos run test:flutter --no-select
     description: Run all Dart & Flutter tests in this project.
 
   test:dart:
