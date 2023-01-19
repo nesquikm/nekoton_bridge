@@ -11,11 +11,11 @@ scripts:
     description: Analyze a specific package in this project.
 
   check-format:
-    exec: dart format --set-exit-if-changed --line-length 120 .
+    exec: dart format --set-exit-if-changed .
     description: Check the format of a specific package in this project.
 
   format:
-    exec: dart format --line-length 120 .
+    exec: dart format .
     description: Format a specific package in this project.
 
   version:

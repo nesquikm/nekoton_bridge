@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter_nekoton_bridge/flutter_nekoton_bridge.dart' as flutter_nekoton_bridge;
+import 'package:flutter_nekoton_bridge/flutter_nekoton_bridge.dart'
+    as flutter_nekoton_bridge;
 
 void main() {
   runApp(const MyApp());
@@ -61,7 +62,8 @@ class _MyAppState extends State<MyApp> {
                 FutureBuilder<int>(
                   future: sumAsyncResult,
                   builder: (BuildContext context, AsyncSnapshot<int> value) {
-                    final displayValue = (value.hasData) ? value.data : 'loading';
+                    final displayValue =
+                        (value.hasData) ? value.data : 'loading';
                     return Text(
                       'await sumAsync(3, 4) = $displayValue',
                       style: textStyle,
@@ -69,7 +71,9 @@ class _MyAppState extends State<MyApp> {
                     );
                   },
                 ),
-                TextButton(onPressed: _onPressed, child: Text('From MyClass $fromMyClass')),
+                TextButton(
+                    onPressed: _onPressed,
+                    child: Text('From MyClass $fromMyClass')),
               ],
             ),
           ),
