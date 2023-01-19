@@ -29,7 +29,9 @@ At this point, all preparations should be completed and we can start compiling t
 
 ## Melos magic 	🪄
 
-Using [melos](https://melos.invertase.dev/) makes it very easy to work with the project, so enjoy:
+Using [melos](https://melos.invertase.dev/) makes it very easy to work with the project, so enjoy.
+
+You can run any job interactively run running `melos run` and selecting needed case or directly (e.g. `melos run test`).
 
 ### Bootstrap 🏁
 
@@ -77,6 +79,10 @@ During build scripts copies platform-specific binaries to `packages/flutter_neko
 ### Android build 🤖
 
 During build scripts copies platform-specific binaries to `packages/flutter_nekoton_bridge/android/netokon_bridge.tar.gz` and unpack it to `packages/flutter_nekoton_bridge/android/src/main/jniLibs/`. It's also a good idea to check this things if something went wrong.
+
+## Tests ✔️
+
+You can run dart, flutter and integration tests: `melos run test:dart`, `melos run test:flutter` or `melos run test:integration`. You can also run all tests at one by running `melos run test`.
 
 ## Conventional Commits ❤️
 

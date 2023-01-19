@@ -56,6 +56,13 @@ scripts:
       flutter: true
       dir-exists: test
 
+  test:integration:
+    run: melos exec -c 1 --fail-fast -- "flutter test integration_test"
+    description: Run Flutter teintegration teststs for a specific package in this project.
+    select-package:
+      flutter: true
+      dir-exists: integration_test
+
   clean:
     run: bash scripts/clean.sh
     description: Clean all
