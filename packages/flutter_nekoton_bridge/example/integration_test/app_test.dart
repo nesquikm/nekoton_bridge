@@ -5,8 +5,6 @@ import 'package:integration_test/integration_test.dart';
 // import 'package:vm_service/vm_service_io.dart';
 
 void main() {
-  print('integration_test/app_test.dart starts!');
-
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('end-to-end test', () {

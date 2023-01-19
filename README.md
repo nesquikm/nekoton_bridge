@@ -84,6 +84,11 @@ During build scripts copies platform-specific binaries to `packages/flutter_neko
 
 You can run dart, flutter and integration tests: `melos run test:dart`, `melos run test:flutter` or `melos run test:integration`. You can also run all tests at one by running `melos run test`.
 
+## Code analysis
+
+You can run code analysis: `melos run analyze`. It will analyze all dart code, including subpackages.
+
+
 ## Conventional Commits ❤️
 
 [This magic](https://melos.invertase.dev/guides/automated-releases#versioning) will update version and build our library automatically using commit messages and tags. This has not yet been implemented, so you can just look forward to this feature in near future :)
