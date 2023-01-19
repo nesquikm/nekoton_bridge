@@ -16,7 +16,7 @@ pub trait MyFormat {
 
 impl MyFormat for i32 {
     fn my_format(&self) -> String {
-        return format!("i32 {}", self);
+        format!("i32 {}", self)
     }
 }
 
@@ -29,6 +29,6 @@ impl MyClass {
         MyClass { val: a }
     }
     pub fn my_format(&self) -> String {
-        return self.val.my_format();
+        self.val.my_format()
     }
 }
