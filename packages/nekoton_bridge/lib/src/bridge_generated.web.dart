@@ -29,7 +29,6 @@ class NekotonBridgePlatform extends FlutterRustBridgeBase<NekotonBridgeWire>
     return [api2wire_i32(raw.val)];
   }
 // Section: finalizer
-
 }
 
 // Section: WASM wire module

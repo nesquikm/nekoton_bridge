@@ -11,7 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  nekoton_bridge: ^1.0.3
+  nekoton_bridge:
+    git:
+      url: https://github.com/nesquikm/nekoton_bridge.git
+      path: packages/nekoton_bridge
 dev_dependencies:
   ffi: ^2.0.1
   ffigen: ^7.2.4
