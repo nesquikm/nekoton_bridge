@@ -1,6 +1,6 @@
 name: flutter_nekoton_bridge
 description: A new Flutter FFI plugin project.
-version: 1.0.2
+version: 1.0.3
 homepage:
 
 environment:
@@ -11,8 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  nekoton_bridge: ^1.0.0
-
+  nekoton_bridge: ^1.0.3
 dev_dependencies:
   ffi: ^2.0.1
   ffigen: ^7.2.4
