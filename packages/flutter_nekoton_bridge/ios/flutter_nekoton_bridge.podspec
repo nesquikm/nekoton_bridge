@@ -27,8 +27,6 @@ release_tag_name = 'nekoton_bridge-v1.0.4-dev.0' # generated; do not edit
 #   s.swift_version = '5.0'
 # end
 
-release_tag_name = 'nekoton_bridge-v0.0.0' # generated; do not edit
-
 # We cannot distribute the XCFramework alongside the library directly,
 # so we have to fetch the correct version here.
 framework_name = 'NekotonBridge.xcframework'
