@@ -1,3 +1,7 @@
+## 1.0.4
+
+ - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
+
 ## 1.0.4-dev.0
 
  - **FIX**: add dependency_overrides.
