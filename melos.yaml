@@ -14,6 +14,12 @@ scripts:
     exec: dart format --set-exit-if-changed .
     description: Check the format of a specific package in this project.
 
+  check-rust:
+    exec: rustfmt --check native/src/* && cargo clippy -- -D warnings
+    description: Check the format of a rust code.
+    select-package:
+      dir-exists: native
+
   format:
     exec: dart format .
     description: Format a specific package in this project.

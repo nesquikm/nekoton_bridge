@@ -88,6 +88,14 @@ You can run dart, flutter and integration tests: `melos run test:dart`, `melos r
 
 You can run code analysis: `melos run analyze`. It will analyze all dart code, including subpackages.
 
+## Code format
+
+`melos run check-format` will check, `melos run format` will fix dart code formatting.
+
+## Rust code format and analysis
+
+`melos run check-rust` will ckeck and analyze rust code.
+
 
 ## Conventional Commits ❤️
 
