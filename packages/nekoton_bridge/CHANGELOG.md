@@ -1,3 +1,8 @@
+## 1.1.0
+
+ - **FEAT**: upgrade flutter_rust_bridge_codegen.
+ - **FEAT**: upgrade flutter_rust_bridge.
+
 ## 1.0.4
 
  - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
