@@ -1,3 +1,7 @@
+## 1.1.1
+
+ - **FIX**: downgrade flutter_rust_bridge.
+
 ## 1.1.0
 
  - **FEAT**: upgrade flutter_rust_bridge_codegen.
