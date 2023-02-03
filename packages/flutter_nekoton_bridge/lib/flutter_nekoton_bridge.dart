@@ -5,6 +5,21 @@ import 'package:nekoton_bridge/nekoton_bridge.dart';
 
 export 'package:nekoton_bridge/nekoton_bridge.dart';
 
+Future<void> setupLogger({
+  debug = true,
+  mobileLogger = true,
+  required Function(LogEntry logEntry) logHandler,
+}) async {
+  var lib = createLib();
+  await lib.initLogger(debug: debug, mobileLogger: mobileLogger);
+  lib.createLogStream().listen(logHandler);
+}
+
+Future<void> simpleLog() async {
+  var lib = createLib();
+  lib.simpleLog(string: "From dart: ${DateTime.now().toIso8601String()}");
+}
+
 Future<int> simpleAdder(int a, int b) {
   var lib = createLib();
   return lib.simpleAdder(a: a, b: b);

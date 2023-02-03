@@ -21,6 +21,47 @@ use std::sync::Arc;
 
 // Section: wire functions
 
+fn wire_init_logger_impl(
+    port_: MessagePort,
+    debug: impl Wire2Api<bool> + UnwindSafe,
+    mobile_logger: impl Wire2Api<bool> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "init_logger",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_debug = debug.wire2api();
+            let api_mobile_logger = mobile_logger.wire2api();
+            move |task_callback| Ok(init_logger(api_debug, api_mobile_logger))
+        },
+    )
+}
+fn wire_create_log_stream_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "create_log_stream",
+            port: Some(port_),
+            mode: FfiCallMode::Stream,
+        },
+        move || move |task_callback| Ok(create_log_stream(task_callback.stream_sink())),
+    )
+}
+fn wire_simple_log_impl(port_: MessagePort, string: impl Wire2Api<String> + UnwindSafe) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "simple_log",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_string = string.wire2api();
+            move |task_callback| Ok(simple_log(api_string))
+        },
+    )
+}
 fn wire_simple_adder_sync_impl(
     a: impl Wire2Api<i32> + UnwindSafe,
     b: impl Wire2Api<i32> + UnwindSafe,
@@ -108,13 +149,38 @@ where
     }
 }
 
+impl Wire2Api<bool> for bool {
+    fn wire2api(self) -> bool {
+        self
+    }
+}
+
 impl Wire2Api<i32> for i32 {
     fn wire2api(self) -> i32 {
         self
     }
 }
 
+impl Wire2Api<u8> for u8 {
+    fn wire2api(self) -> u8 {
+        self
+    }
+}
+
 // Section: impl IntoDart
+
+impl support::IntoDart for LogEntry {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.time_millis.into_dart(),
+            self.level.into_dart(),
+            self.tag.into_dart(),
+            self.msg.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for LogEntry {}
 
 impl support::IntoDart for MyClass {
     fn into_dart(self) -> support::DartAbi {
@@ -134,6 +200,21 @@ support::lazy_static! {
 mod web {
     use super::*;
     // Section: wire functions
+
+    #[wasm_bindgen]
+    pub fn wire_init_logger(port_: MessagePort, debug: bool, mobile_logger: bool) {
+        wire_init_logger_impl(port_, debug, mobile_logger)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_create_log_stream(port_: MessagePort) {
+        wire_create_log_stream_impl(port_)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_simple_log(port_: MessagePort, string: String) {
+        wire_simple_log_impl(port_, string)
+    }
 
     #[wasm_bindgen]
     pub fn wire_simple_adder_sync(a: i32, b: i32) -> support::WireSyncReturn {
@@ -161,6 +242,12 @@ mod web {
 
     // Section: impl Wire2Api
 
+    impl Wire2Api<String> for String {
+        fn wire2api(self) -> String {
+            self
+        }
+    }
+
     impl Wire2Api<MyClass> for JsValue {
         fn wire2api(self) -> MyClass {
             let self_ = self.dyn_into::<JsArray>().unwrap();
@@ -175,11 +262,37 @@ mod web {
             }
         }
     }
+
+    impl Wire2Api<Vec<u8>> for Box<[u8]> {
+        fn wire2api(self) -> Vec<u8> {
+            self.into_vec()
+        }
+    }
     // Section: impl Wire2Api for JsValue
 
+    impl Wire2Api<String> for JsValue {
+        fn wire2api(self) -> String {
+            self.as_string().expect("non-UTF-8 string, or not a string")
+        }
+    }
+    impl Wire2Api<bool> for JsValue {
+        fn wire2api(self) -> bool {
+            self.is_truthy()
+        }
+    }
     impl Wire2Api<i32> for JsValue {
         fn wire2api(self) -> i32 {
             self.unchecked_into_f64() as _
+        }
+    }
+    impl Wire2Api<u8> for JsValue {
+        fn wire2api(self) -> u8 {
+            self.unchecked_into_f64() as _
+        }
+    }
+    impl Wire2Api<Vec<u8>> for JsValue {
+        fn wire2api(self) -> Vec<u8> {
+            self.unchecked_into::<js_sys::Uint8Array>().to_vec().into()
         }
     }
 }
@@ -190,6 +303,21 @@ pub use web::*;
 mod io {
     use super::*;
     // Section: wire functions
+
+    #[no_mangle]
+    pub extern "C" fn wire_init_logger(port_: i64, debug: bool, mobile_logger: bool) {
+        wire_init_logger_impl(port_, debug, mobile_logger)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_create_log_stream(port_: i64) {
+        wire_create_log_stream_impl(port_)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_simple_log(port_: i64, string: *mut wire_uint_8_list) {
+        wire_simple_log_impl(port_, string)
+    }
 
     #[no_mangle]
     pub extern "C" fn wire_simple_adder_sync(a: i32, b: i32) -> support::WireSyncReturn {
@@ -218,9 +346,25 @@ mod io {
         support::new_leak_box_ptr(wire_MyClass::new_with_null_ptr())
     }
 
+    #[no_mangle]
+    pub extern "C" fn new_uint_8_list_0(len: i32) -> *mut wire_uint_8_list {
+        let ans = wire_uint_8_list {
+            ptr: support::new_leak_vec_ptr(Default::default(), len),
+            len,
+        };
+        support::new_leak_box_ptr(ans)
+    }
+
     // Section: related functions
 
     // Section: impl Wire2Api
+
+    impl Wire2Api<String> for *mut wire_uint_8_list {
+        fn wire2api(self) -> String {
+            let vec: Vec<u8> = self.wire2api();
+            String::from_utf8_lossy(&vec).into_owned()
+        }
+    }
 
     impl Wire2Api<MyClass> for *mut wire_MyClass {
         fn wire2api(self) -> MyClass {
@@ -236,12 +380,28 @@ mod io {
             }
         }
     }
+
+    impl Wire2Api<Vec<u8>> for *mut wire_uint_8_list {
+        fn wire2api(self) -> Vec<u8> {
+            unsafe {
+                let wrap = support::box_from_leak_ptr(self);
+                support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            }
+        }
+    }
     // Section: wire structs
 
     #[repr(C)]
     #[derive(Clone)]
     pub struct wire_MyClass {
         val: i32,
+    }
+
+    #[repr(C)]
+    #[derive(Clone)]
+    pub struct wire_uint_8_list {
+        ptr: *mut u8,
+        len: i32,
     }
 
     // Section: impl NewWithNullPtr

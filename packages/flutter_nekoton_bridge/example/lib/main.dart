@@ -25,11 +25,24 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     sumResult = flutter_nekoton_bridge.simpleAdderSync(1, 2);
     sumAsyncResult = flutter_nekoton_bridge.simpleAdder(3, 4);
+
+    flutter_nekoton_bridge.setupLogger(
+      debug: true,
+      mobileLogger: true,
+      logHandler: (logEntry) => debugPrint(
+        'FromRust: ${logEntry.level} ${logEntry.tag} ${logEntry.msg} (rust_time=${logEntry.timeMillis})',
+      ),
+    );
   }
 
   void _onPressed() async {
     fromMyClass = await flutter_nekoton_bridge.queryMyClass();
     setState(() {});
+  }
+
+  void _onPressedLog() async {
+    debugPrint('Press!');
+    flutter_nekoton_bridge.simpleLog();
   }
 
   @override
@@ -72,8 +85,13 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 TextButton(
-                    onPressed: _onPressed,
-                    child: Text('From MyClass $fromMyClass')),
+                  onPressed: _onPressed,
+                  child: Text('From MyClass $fromMyClass'),
+                ),
+                TextButton(
+                  onPressed: _onPressedLog,
+                  child: const Text('Log'),
+                ),
               ],
             ),
           ),

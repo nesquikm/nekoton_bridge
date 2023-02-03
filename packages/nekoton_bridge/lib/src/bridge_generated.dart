@@ -15,6 +15,21 @@ import 'bridge_generated.io.dart'
     if (dart.library.html) 'bridge_generated.web.dart';
 
 abstract class NekotonBridge {
+  /// Init logger
+  Future<void> initLogger(
+      {required bool debug, required bool mobileLogger, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kInitLoggerConstMeta;
+
+  /// Create log stream
+  Stream<LogEntry> createLogStream({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kCreateLogStreamConstMeta;
+
+  Future<void> simpleLog({required String string, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kSimpleLogConstMeta;
+
   int simpleAdderSync({required int a, required int b, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kSimpleAdderSyncConstMeta;
@@ -30,6 +45,21 @@ abstract class NekotonBridge {
   Future<String> myFormatMethodMyClass({required MyClass that, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kMyFormatMethodMyClassConstMeta;
+}
+
+/// Log entry
+class LogEntry {
+  final int timeMillis;
+  final int level;
+  final String tag;
+  final String msg;
+
+  LogEntry({
+    required this.timeMillis,
+    required this.level,
+    required this.tag,
+    required this.msg,
+  });
 }
 
 class MyClass {
@@ -59,6 +89,58 @@ class NekotonBridgeImpl implements NekotonBridge {
   factory NekotonBridgeImpl.wasm(FutureOr<WasmModule> module) =>
       NekotonBridgeImpl(module as ExternalLibrary);
   NekotonBridgeImpl.raw(this._platform);
+  Future<void> initLogger(
+      {required bool debug, required bool mobileLogger, dynamic hint}) {
+    var arg0 = debug;
+    var arg1 = mobileLogger;
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_init_logger(port_, arg0, arg1),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kInitLoggerConstMeta,
+      argValues: [debug, mobileLogger],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kInitLoggerConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "init_logger",
+        argNames: ["debug", "mobileLogger"],
+      );
+
+  Stream<LogEntry> createLogStream({dynamic hint}) {
+    return _platform.executeStream(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_create_log_stream(port_),
+      parseSuccessData: _wire2api_log_entry,
+      constMeta: kCreateLogStreamConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kCreateLogStreamConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "create_log_stream",
+        argNames: [],
+      );
+
+  Future<void> simpleLog({required String string, dynamic hint}) {
+    var arg0 = _platform.api2wire_String(string);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_simple_log(port_, arg0),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kSimpleLogConstMeta,
+      argValues: [string],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kSimpleLogConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "simple_log",
+        argNames: ["string"],
+      );
+
   int simpleAdderSync({required int a, required int b, dynamic hint}) {
     var arg0 = api2wire_i32(a);
     var arg1 = api2wire_i32(b);
@@ -144,6 +226,22 @@ class NekotonBridgeImpl implements NekotonBridge {
     return raw as int;
   }
 
+  int _wire2api_i64(dynamic raw) {
+    return castInt(raw);
+  }
+
+  LogEntry _wire2api_log_entry(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return LogEntry(
+      timeMillis: _wire2api_i64(arr[0]),
+      level: _wire2api_i32(arr[1]),
+      tag: _wire2api_String(arr[2]),
+      msg: _wire2api_String(arr[3]),
+    );
+  }
+
   MyClass _wire2api_my_class(dynamic raw) {
     final arr = raw as List<dynamic>;
     if (arr.length != 1)
@@ -161,12 +259,26 @@ class NekotonBridgeImpl implements NekotonBridge {
   Uint8List _wire2api_uint_8_list(dynamic raw) {
     return raw as Uint8List;
   }
+
+  void _wire2api_unit(dynamic raw) {
+    return;
+  }
 }
 
 // Section: api2wire
 
 @protected
+bool api2wire_bool(bool raw) {
+  return raw;
+}
+
+@protected
 int api2wire_i32(int raw) {
+  return raw;
+}
+
+@protected
+int api2wire_u8(int raw) {
   return raw;
 }
 

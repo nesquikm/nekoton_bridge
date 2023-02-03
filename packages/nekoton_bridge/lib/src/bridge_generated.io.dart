@@ -17,12 +17,23 @@ class NekotonBridgePlatform extends FlutterRustBridgeBase<NekotonBridgeWire> {
 // Section: api2wire
 
   @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_String(String raw) {
+    return api2wire_uint_8_list(utf8.encoder.convert(raw));
+  }
+
+  @protected
   ffi.Pointer<wire_MyClass> api2wire_box_autoadd_my_class(MyClass raw) {
     final ptr = inner.new_box_autoadd_my_class_0();
     _api_fill_to_wire_my_class(raw, ptr.ref);
     return ptr;
   }
 
+  @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_uint_8_list(Uint8List raw) {
+    final ans = inner.new_uint_8_list_0(raw.length);
+    ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
+    return ans;
+  }
 // Section: finalizer
 
 // Section: api_fill_to_wire
@@ -132,6 +143,55 @@ class NekotonBridgeWire implements FlutterRustBridgeWireBase {
   late final _init_frb_dart_api_dl = _init_frb_dart_api_dlPtr
       .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
+  void wire_init_logger(
+    int port_,
+    bool debug,
+    bool mobile_logger,
+  ) {
+    return _wire_init_logger(
+      port_,
+      debug,
+      mobile_logger,
+    );
+  }
+
+  late final _wire_init_loggerPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Bool, ffi.Bool)>>(
+      'wire_init_logger');
+  late final _wire_init_logger =
+      _wire_init_loggerPtr.asFunction<void Function(int, bool, bool)>();
+
+  void wire_create_log_stream(
+    int port_,
+  ) {
+    return _wire_create_log_stream(
+      port_,
+    );
+  }
+
+  late final _wire_create_log_streamPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+          'wire_create_log_stream');
+  late final _wire_create_log_stream =
+      _wire_create_log_streamPtr.asFunction<void Function(int)>();
+
+  void wire_simple_log(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> string,
+  ) {
+    return _wire_simple_log(
+      port_,
+      string,
+    );
+  }
+
+  late final _wire_simple_logPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64, ffi.Pointer<wire_uint_8_list>)>>('wire_simple_log');
+  late final _wire_simple_log = _wire_simple_logPtr
+      .asFunction<void Function(int, ffi.Pointer<wire_uint_8_list>)>();
+
   WireSyncReturn wire_simple_adder_sync(
     int a,
     int b,
@@ -212,6 +272,21 @@ class NekotonBridgeWire implements FlutterRustBridgeWireBase {
   late final _new_box_autoadd_my_class_0 = _new_box_autoadd_my_class_0Ptr
       .asFunction<ffi.Pointer<wire_MyClass> Function()>();
 
+  ffi.Pointer<wire_uint_8_list> new_uint_8_list_0(
+    int len,
+  ) {
+    return _new_uint_8_list_0(
+      len,
+    );
+  }
+
+  late final _new_uint_8_list_0Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_uint_8_list> Function(
+              ffi.Int32)>>('new_uint_8_list_0');
+  late final _new_uint_8_list_0 = _new_uint_8_list_0Ptr
+      .asFunction<ffi.Pointer<wire_uint_8_list> Function(int)>();
+
   void free_WireSyncReturn(
     WireSyncReturn ptr,
   ) {
@@ -228,6 +303,13 @@ class NekotonBridgeWire implements FlutterRustBridgeWireBase {
 }
 
 class _Dart_Handle extends ffi.Opaque {}
+
+class wire_uint_8_list extends ffi.Struct {
+  external ffi.Pointer<ffi.Uint8> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
 
 class wire_MyClass extends ffi.Struct {
   @ffi.Int32()

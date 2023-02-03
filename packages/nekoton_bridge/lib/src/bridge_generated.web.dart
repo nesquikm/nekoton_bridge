@@ -20,6 +20,11 @@ class NekotonBridgePlatform extends FlutterRustBridgeBase<NekotonBridgeWire>
 // Section: api2wire
 
   @protected
+  String api2wire_String(String raw) {
+    return raw;
+  }
+
+  @protected
   List<dynamic> api2wire_box_autoadd_my_class(MyClass raw) {
     return api2wire_my_class(raw);
   }
@@ -27,6 +32,11 @@ class NekotonBridgePlatform extends FlutterRustBridgeBase<NekotonBridgeWire>
   @protected
   List<dynamic> api2wire_my_class(MyClass raw) {
     return [api2wire_i32(raw.val)];
+  }
+
+  @protected
+  Uint8List api2wire_uint_8_list(Uint8List raw) {
+    return raw;
   }
 // Section: finalizer
 }
@@ -41,6 +51,14 @@ external NekotonBridgeWasmModule get wasmModule;
 class NekotonBridgeWasmModule implements WasmModule {
   external Object /* Promise */ call([String? moduleName]);
   external NekotonBridgeWasmModule bind(dynamic thisArg, String moduleName);
+  external dynamic /* void */ wire_init_logger(
+      NativePortType port_, bool debug, bool mobile_logger);
+
+  external dynamic /* void */ wire_create_log_stream(NativePortType port_);
+
+  external dynamic /* void */ wire_simple_log(
+      NativePortType port_, String string);
+
   external dynamic /* int */ wire_simple_adder_sync(int a, int b);
 
   external dynamic /* void */ wire_simple_adder(
@@ -59,6 +77,15 @@ class NekotonBridgeWire
     extends FlutterRustBridgeWasmWireBase<NekotonBridgeWasmModule> {
   NekotonBridgeWire(FutureOr<WasmModule> module)
       : super(WasmModule.cast<NekotonBridgeWasmModule>(module));
+
+  void wire_init_logger(NativePortType port_, bool debug, bool mobile_logger) =>
+      wasmModule.wire_init_logger(port_, debug, mobile_logger);
+
+  void wire_create_log_stream(NativePortType port_) =>
+      wasmModule.wire_create_log_stream(port_);
+
+  void wire_simple_log(NativePortType port_, String string) =>
+      wasmModule.wire_simple_log(port_, string);
 
   dynamic /* int */ wire_simple_adder_sync(int a, int b) =>
       wasmModule.wire_simple_adder_sync(a, b);
