@@ -1,3 +1,8 @@
+## 1.2.0-dev.0
+
+ - **FIX**: android build.
+ - **FEAT**: add logger.
+
 ## 1.1.1
 
  - **FIX**: downgrade flutter_rust_bridge.
