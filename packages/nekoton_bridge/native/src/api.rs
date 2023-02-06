@@ -31,6 +31,10 @@ pub fn simple_log(string: String) {
     error!("Error: {string}");
 }
 
+pub fn simple_panic() {
+    panic!("Just a panic");
+}
+
 pub fn simple_adder_sync(a: i32, b: i32) -> SyncReturn<i32> {
     SyncReturn(a + b)
 }

@@ -62,6 +62,16 @@ fn wire_simple_log_impl(port_: MessagePort, string: impl Wire2Api<String> + Unwi
         },
     )
 }
+fn wire_simple_panic_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "simple_panic",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Ok(simple_panic()),
+    )
+}
 fn wire_simple_adder_sync_impl(
     a: impl Wire2Api<i32> + UnwindSafe,
     b: impl Wire2Api<i32> + UnwindSafe,
@@ -217,6 +227,11 @@ mod web {
     }
 
     #[wasm_bindgen]
+    pub fn wire_simple_panic(port_: MessagePort) {
+        wire_simple_panic_impl(port_)
+    }
+
+    #[wasm_bindgen]
     pub fn wire_simple_adder_sync(a: i32, b: i32) -> support::WireSyncReturn {
         wire_simple_adder_sync_impl(a, b)
     }
@@ -317,6 +332,11 @@ mod io {
     #[no_mangle]
     pub extern "C" fn wire_simple_log(port_: i64, string: *mut wire_uint_8_list) {
         wire_simple_log_impl(port_, string)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_simple_panic(port_: i64) {
+        wire_simple_panic_impl(port_)
     }
 
     #[no_mangle]

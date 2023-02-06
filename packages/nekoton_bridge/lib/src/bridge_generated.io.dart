@@ -192,6 +192,20 @@ class NekotonBridgeWire implements FlutterRustBridgeWireBase {
   late final _wire_simple_log = _wire_simple_logPtr
       .asFunction<void Function(int, ffi.Pointer<wire_uint_8_list>)>();
 
+  void wire_simple_panic(
+    int port_,
+  ) {
+    return _wire_simple_panic(
+      port_,
+    );
+  }
+
+  late final _wire_simple_panicPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+          'wire_simple_panic');
+  late final _wire_simple_panic =
+      _wire_simple_panicPtr.asFunction<void Function(int)>();
+
   WireSyncReturn wire_simple_adder_sync(
     int a,
     int b,

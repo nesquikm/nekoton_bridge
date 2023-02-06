@@ -41,8 +41,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _onPressedLog() async {
-    debugPrint('Press!');
+    debugPrint('Log!');
     flutter_nekoton_bridge.simpleLog();
+  }
+
+  void _onPressedPanic() async {
+    debugPrint('Panic!');
+    flutter_nekoton_bridge.simplePanic();
   }
 
   @override
@@ -91,6 +96,10 @@ class _MyAppState extends State<MyApp> {
                 TextButton(
                   onPressed: _onPressedLog,
                   child: const Text('Log'),
+                ),
+                TextButton(
+                  onPressed: _onPressedPanic,
+                  child: const Text('Panic'),
                 ),
               ],
             ),

@@ -20,6 +20,11 @@ Future<void> simpleLog() async {
   lib.simpleLog(string: "From dart: ${DateTime.now().toIso8601String()}");
 }
 
+Future<void> simplePanic() async {
+  var lib = createLib();
+  lib.simplePanic();
+}
+
 Future<int> simpleAdder(int a, int b) {
   var lib = createLib();
   return lib.simpleAdder(a: a, b: b);

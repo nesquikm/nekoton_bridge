@@ -55,6 +55,10 @@ pub fn init_logger(debug: bool, mobile_logger: bool) {
             level
         );
     });
+
+    log_panics::Config::new()
+        .backtrace_mode(log_panics::BacktraceMode::Resolved)
+        .install_panic_hook();
 }
 
 lazy_static! {

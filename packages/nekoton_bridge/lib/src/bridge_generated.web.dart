@@ -59,6 +59,8 @@ class NekotonBridgeWasmModule implements WasmModule {
   external dynamic /* void */ wire_simple_log(
       NativePortType port_, String string);
 
+  external dynamic /* void */ wire_simple_panic(NativePortType port_);
+
   external dynamic /* int */ wire_simple_adder_sync(int a, int b);
 
   external dynamic /* void */ wire_simple_adder(
@@ -86,6 +88,9 @@ class NekotonBridgeWire
 
   void wire_simple_log(NativePortType port_, String string) =>
       wasmModule.wire_simple_log(port_, string);
+
+  void wire_simple_panic(NativePortType port_) =>
+      wasmModule.wire_simple_panic(port_);
 
   dynamic /* int */ wire_simple_adder_sync(int a, int b) =>
       wasmModule.wire_simple_adder_sync(a, b);

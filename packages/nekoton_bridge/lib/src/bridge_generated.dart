@@ -30,6 +30,10 @@ abstract class NekotonBridge {
 
   FlutterRustBridgeTaskConstMeta get kSimpleLogConstMeta;
 
+  Future<void> simplePanic({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kSimplePanicConstMeta;
+
   int simpleAdderSync({required int a, required int b, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kSimpleAdderSyncConstMeta;
@@ -139,6 +143,22 @@ class NekotonBridgeImpl implements NekotonBridge {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "simple_log",
         argNames: ["string"],
+      );
+
+  Future<void> simplePanic({dynamic hint}) {
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_simple_panic(port_),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kSimplePanicConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kSimplePanicConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "simple_panic",
+        argNames: [],
       );
 
   int simpleAdderSync({required int a, required int b, dynamic hint}) {

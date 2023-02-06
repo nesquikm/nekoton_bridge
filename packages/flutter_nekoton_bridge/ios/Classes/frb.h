@@ -36,6 +36,8 @@ void wire_create_log_stream(int64_t port_);
 
 void wire_simple_log(int64_t port_, struct wire_uint_8_list *string);
 
+void wire_simple_panic(int64_t port_);
+
 WireSyncReturn wire_simple_adder_sync(int32_t a, int32_t b);
 
 void wire_simple_adder(int64_t port_, int32_t a, int32_t b);
@@ -55,6 +57,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_init_logger);
     dummy_var ^= ((int64_t) (void*) wire_create_log_stream);
     dummy_var ^= ((int64_t) (void*) wire_simple_log);
+    dummy_var ^= ((int64_t) (void*) wire_simple_panic);
     dummy_var ^= ((int64_t) (void*) wire_simple_adder_sync);
     dummy_var ^= ((int64_t) (void*) wire_simple_adder);
     dummy_var ^= ((int64_t) (void*) wire_new__static_method__MyClass);
