@@ -1,3 +1,7 @@
+## 1.3.0-dev.1
+
+ - **FIX**: exports.
+
 ## 1.3.0-dev.0
 
  - **FEAT**: trigger version.
