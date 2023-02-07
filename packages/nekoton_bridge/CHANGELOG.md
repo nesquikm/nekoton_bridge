@@ -1,3 +1,7 @@
+## 1.5.0-dev.2
+
+ - **FEAT**: add precise log control.
+
 ## 1.5.0-dev.1
 
  - **FEAT**: change log level to enum.
