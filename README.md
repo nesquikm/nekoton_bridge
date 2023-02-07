@@ -100,5 +100,3 @@ You can run code analysis: `melos run analyze`. It will analyze all dart code, i
 ## Conventional Commits ❤️
 
 [This magic](https://melos.invertase.dev/guides/automated-releases#versioning) will update version and build our library automatically using commit messages and tags. [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0) is a lightweight convention on top of commit messages.
-
-
