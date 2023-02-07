@@ -72,3 +72,7 @@ scripts:
   clean:
     run: bash scripts/clean.sh
     description: Clean all
+
+command:
+  version:
+    updateGitTagRefs: true
