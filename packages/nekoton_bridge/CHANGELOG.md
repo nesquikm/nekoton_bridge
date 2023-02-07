@@ -1,3 +1,8 @@
+## 1.4.0-dev.1
+
+ - **FEAT**: version upgrade.
+ - **FEAT**: another version upgrade.
+
 ## 1.4.0-dev.0
 
  - **FEAT**: trigger version.
