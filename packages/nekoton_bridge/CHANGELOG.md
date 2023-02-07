@@ -1,3 +1,7 @@
+## 1.5.0-dev.1
+
+ - **FEAT**: change log level to enum.
+
 ## 1.5.0-dev.0
 
  - **FEAT**: version upgrade.
