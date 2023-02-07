@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CURR_VERSION=nekoton_bridge-v`awk '/^version: /{print $2}' packages/flutter_nekoton_bridge/pubspec.yaml`
+CURR_VERSION=nekoton_bridge-v`awk '/^version: /{print $2}' packages/nekoton_bridge/pubspec.yaml`
 
 # iOS & macOS
 APPLE_HEADER="release_tag_name = '$CURR_VERSION' # generated; do not edit"
