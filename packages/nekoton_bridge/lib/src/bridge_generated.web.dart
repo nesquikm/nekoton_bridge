@@ -52,7 +52,7 @@ class NekotonBridgeWasmModule implements WasmModule {
   external Object /* Promise */ call([String? moduleName]);
   external NekotonBridgeWasmModule bind(dynamic thisArg, String moduleName);
   external dynamic /* void */ wire_init_logger(
-      NativePortType port_, bool debug, bool mobile_logger);
+      NativePortType port_, int level, bool mobile_logger);
 
   external dynamic /* void */ wire_create_log_stream(NativePortType port_);
 
@@ -80,8 +80,8 @@ class NekotonBridgeWire
   NekotonBridgeWire(FutureOr<WasmModule> module)
       : super(WasmModule.cast<NekotonBridgeWasmModule>(module));
 
-  void wire_init_logger(NativePortType port_, bool debug, bool mobile_logger) =>
-      wasmModule.wire_init_logger(port_, debug, mobile_logger);
+  void wire_init_logger(NativePortType port_, int level, bool mobile_logger) =>
+      wasmModule.wire_init_logger(port_, level, mobile_logger);
 
   void wire_create_log_stream(NativePortType port_) =>
       wasmModule.wire_create_log_stream(port_);

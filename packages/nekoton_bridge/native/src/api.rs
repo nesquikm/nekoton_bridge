@@ -21,8 +21,8 @@ pub struct LogEntry {
 }
 
 /// Init logger
-pub fn init_logger(debug: bool, mobile_logger: bool) {
-    logger::init_logger(debug, mobile_logger);
+pub fn init_logger(level: LogLevel, mobile_logger: bool) {
+    logger::init_logger(level, mobile_logger);
 }
 
 /// Create log stream

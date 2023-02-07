@@ -30,7 +30,7 @@ uintptr_t new_dart_opaque(Dart_Handle handle);
 
 intptr_t init_frb_dart_api_dl(void *obj);
 
-void wire_init_logger(int64_t port_, bool debug, bool mobile_logger);
+void wire_init_logger(int64_t port_, int32_t level, bool mobile_logger);
 
 void wire_create_log_stream(int64_t port_);
 

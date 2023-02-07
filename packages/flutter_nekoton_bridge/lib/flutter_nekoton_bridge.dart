@@ -6,12 +6,12 @@ import 'package:nekoton_bridge/nekoton_bridge.dart';
 export 'package:nekoton_bridge/nekoton_bridge.dart';
 
 Future<void> setupLogger({
-  debug = true,
+  level = LogLevel.Warn,
   mobileLogger = true,
   required Function(LogEntry logEntry) logHandler,
 }) async {
   var lib = createLib();
-  await lib.initLogger(debug: debug, mobileLogger: mobileLogger);
+  await lib.initLogger(level: level, mobileLogger: mobileLogger);
   lib.createLogStream().listen(logHandler);
 }
 

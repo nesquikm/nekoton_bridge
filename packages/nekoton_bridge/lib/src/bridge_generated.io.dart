@@ -145,21 +145,22 @@ class NekotonBridgeWire implements FlutterRustBridgeWireBase {
 
   void wire_init_logger(
     int port_,
-    bool debug,
+    int level,
     bool mobile_logger,
   ) {
     return _wire_init_logger(
       port_,
-      debug,
+      level,
       mobile_logger,
     );
   }
 
   late final _wire_init_loggerPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Bool, ffi.Bool)>>(
-      'wire_init_logger');
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64, ffi.Int32, ffi.Bool)>>('wire_init_logger');
   late final _wire_init_logger =
-      _wire_init_loggerPtr.asFunction<void Function(int, bool, bool)>();
+      _wire_init_loggerPtr.asFunction<void Function(int, int, bool)>();
 
   void wire_create_log_stream(
     int port_,

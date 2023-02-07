@@ -17,7 +17,7 @@ import 'bridge_generated.io.dart'
 abstract class NekotonBridge {
   /// Init logger
   Future<void> initLogger(
-      {required bool debug, required bool mobileLogger, dynamic hint});
+      {required LogLevel level, required bool mobileLogger, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kInitLoggerConstMeta;
 
@@ -102,14 +102,14 @@ class NekotonBridgeImpl implements NekotonBridge {
       NekotonBridgeImpl(module as ExternalLibrary);
   NekotonBridgeImpl.raw(this._platform);
   Future<void> initLogger(
-      {required bool debug, required bool mobileLogger, dynamic hint}) {
-    var arg0 = debug;
+      {required LogLevel level, required bool mobileLogger, dynamic hint}) {
+    var arg0 = api2wire_log_level(level);
     var arg1 = mobileLogger;
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_init_logger(port_, arg0, arg1),
       parseSuccessData: _wire2api_unit,
       constMeta: kInitLoggerConstMeta,
-      argValues: [debug, mobileLogger],
+      argValues: [level, mobileLogger],
       hint: hint,
     ));
   }
@@ -117,7 +117,7 @@ class NekotonBridgeImpl implements NekotonBridge {
   FlutterRustBridgeTaskConstMeta get kInitLoggerConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
         debugName: "init_logger",
-        argNames: ["debug", "mobileLogger"],
+        argNames: ["level", "mobileLogger"],
       );
 
   Stream<LogEntry> createLogStream({dynamic hint}) {
@@ -307,6 +307,11 @@ bool api2wire_bool(bool raw) {
 @protected
 int api2wire_i32(int raw) {
   return raw;
+}
+
+@protected
+int api2wire_log_level(LogLevel raw) {
+  return api2wire_i32(raw.index);
 }
 
 @protected

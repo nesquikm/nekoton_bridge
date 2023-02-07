@@ -23,7 +23,7 @@ use std::sync::Arc;
 
 fn wire_init_logger_impl(
     port_: MessagePort,
-    debug: impl Wire2Api<bool> + UnwindSafe,
+    level: impl Wire2Api<LogLevel> + UnwindSafe,
     mobile_logger: impl Wire2Api<bool> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
@@ -33,9 +33,9 @@ fn wire_init_logger_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_debug = debug.wire2api();
+            let api_level = level.wire2api();
             let api_mobile_logger = mobile_logger.wire2api();
-            move |task_callback| Ok(init_logger(api_debug, api_mobile_logger))
+            move |task_callback| Ok(init_logger(api_level, api_mobile_logger))
         },
     )
 }
@@ -170,6 +170,18 @@ impl Wire2Api<i32> for i32 {
         self
     }
 }
+impl Wire2Api<LogLevel> for i32 {
+    fn wire2api(self) -> LogLevel {
+        match self {
+            0 => LogLevel::Trace,
+            1 => LogLevel::Debug,
+            2 => LogLevel::Info,
+            3 => LogLevel::Warn,
+            4 => LogLevel::Error,
+            _ => unreachable!("Invalid variant for LogLevel: {}", self),
+        }
+    }
+}
 
 impl Wire2Api<u8> for u8 {
     fn wire2api(self) -> u8 {
@@ -224,8 +236,8 @@ mod web {
     // Section: wire functions
 
     #[wasm_bindgen]
-    pub fn wire_init_logger(port_: MessagePort, debug: bool, mobile_logger: bool) {
-        wire_init_logger_impl(port_, debug, mobile_logger)
+    pub fn wire_init_logger(port_: MessagePort, level: i32, mobile_logger: bool) {
+        wire_init_logger_impl(port_, level, mobile_logger)
     }
 
     #[wasm_bindgen]
@@ -312,6 +324,11 @@ mod web {
             self.unchecked_into_f64() as _
         }
     }
+    impl Wire2Api<LogLevel> for JsValue {
+        fn wire2api(self) -> LogLevel {
+            (self.unchecked_into_f64() as i32).wire2api()
+        }
+    }
     impl Wire2Api<u8> for JsValue {
         fn wire2api(self) -> u8 {
             self.unchecked_into_f64() as _
@@ -332,8 +349,8 @@ mod io {
     // Section: wire functions
 
     #[no_mangle]
-    pub extern "C" fn wire_init_logger(port_: i64, debug: bool, mobile_logger: bool) {
-        wire_init_logger_impl(port_, debug, mobile_logger)
+    pub extern "C" fn wire_init_logger(port_: i64, level: i32, mobile_logger: bool) {
+        wire_init_logger_impl(port_, level, mobile_logger)
     }
 
     #[no_mangle]

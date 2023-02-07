@@ -11,27 +11,29 @@ use crate::api::{LogEntry, LogLevel};
 
 static INIT_LOGGER_ONCE: Once = Once::new();
 
-pub fn init_logger(debug: bool, mobile_logger: bool) {
+pub fn init_logger(level: LogLevel, mobile_logger: bool) {
     // https://stackoverflow.com/questions/30177845/how-to-initialize-the-logger-for-integration-tests
     INIT_LOGGER_ONCE.call_once(|| {
-        let level = if debug {
-            LevelFilter::Debug
-        } else {
-            LevelFilter::Warn
+        let level_filter = match level {
+            LogLevel::Trace => LevelFilter::Trace,
+            LogLevel::Debug => LevelFilter::Debug,
+            LogLevel::Info => LevelFilter::Info,
+            LogLevel::Warn => LevelFilter::Warn,
+            LogLevel::Error => LevelFilter::Error,
         };
 
         assert!(
-            level <= log::STATIC_MAX_LEVEL,
+            level_filter <= log::STATIC_MAX_LEVEL,
             "Should respect log::STATIC_MAX_LEVEL={:?}, which is done in compile time. level{:?}",
             log::STATIC_MAX_LEVEL,
-            level
+            level_filter
         );
 
         let mut logger: Vec<Box<dyn SharedLogger>> = vec![
-            Box::new(SendToDartLogger::new(level)),
+            Box::new(SendToDartLogger::new(level_filter)),
             // #[cfg(not(any(target_os = "android", target_os = "ios")))]
             TermLogger::new(
-                level,
+                level_filter,
                 ConfigBuilder::new()
                     .set_time_format_rfc3339()
                     // .set_time_format_str("%H:%M:%S%.3f")
@@ -42,7 +44,7 @@ pub fn init_logger(debug: bool, mobile_logger: bool) {
         ];
 
         if mobile_logger {
-            logger.push(Box::new(MyMobileLogger::new(level)));
+            logger.push(Box::new(MyMobileLogger::new(level_filter)));
         }
 
         CombinedLogger::init(logger).unwrap_or_else(|e| {
@@ -52,7 +54,7 @@ pub fn init_logger(debug: bool, mobile_logger: bool) {
 
         warn!(
             "init_logger finished, chosen level={:?} (deliberately output by warn level)",
-            level
+            level_filter
         );
     });
 
