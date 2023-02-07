@@ -1,3 +1,7 @@
+## 1.4.0-dev.2
+
+ - **FEAT**: another upgrade.
+
 ## 1.4.0-dev.1
 
  - **FEAT**: version upgrade.
