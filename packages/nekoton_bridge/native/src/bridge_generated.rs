@@ -192,6 +192,18 @@ impl support::IntoDart for LogEntry {
 }
 impl support::IntoDartExceptPrimitive for LogEntry {}
 
+impl support::IntoDart for LogLevel {
+    fn into_dart(self) -> support::DartAbi {
+        match self {
+            Self::Trace => 0,
+            Self::Debug => 1,
+            Self::Info => 2,
+            Self::Warn => 3,
+            Self::Error => 4,
+        }
+        .into_dart()
+    }
+}
 impl support::IntoDart for MyClass {
     fn into_dart(self) -> support::DartAbi {
         vec![self.val.into_dart()].into_dart()

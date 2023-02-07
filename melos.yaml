@@ -69,6 +69,10 @@ scripts:
       flutter: true
       dir-exists: integration_test
 
+  check-all:
+    description: Prepare to commit by checking all things
+    run: melos analyze && melos check-format && melos check-rust && melos test && melos test:integration
+
   clean:
     run: bash scripts/clean.sh
     description: Clean all

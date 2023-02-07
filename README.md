@@ -96,6 +96,10 @@ You can run code analysis: `melos run analyze`. It will analyze all dart code, i
 
 `melos run check-rust` will ckeck and analyze rust code.
 
+## Prepare to commit
+
+`melos run check-all` will ckeck, analyze and run all tests. In future this thing will be in git pre-comit hook.
+
 
 ## Conventional Commits ❤️
 

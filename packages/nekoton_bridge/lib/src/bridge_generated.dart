@@ -54,7 +54,7 @@ abstract class NekotonBridge {
 /// Log entry
 class LogEntry {
   final int timeMillis;
-  final int level;
+  final LogLevel level;
   final String tag;
   final String msg;
 
@@ -64,6 +64,14 @@ class LogEntry {
     required this.tag,
     required this.msg,
   });
+}
+
+enum LogLevel {
+  Trace,
+  Debug,
+  Info,
+  Warn,
+  Error,
 }
 
 class MyClass {
@@ -256,10 +264,14 @@ class NekotonBridgeImpl implements NekotonBridge {
       throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return LogEntry(
       timeMillis: _wire2api_i64(arr[0]),
-      level: _wire2api_i32(arr[1]),
+      level: _wire2api_log_level(arr[1]),
       tag: _wire2api_String(arr[2]),
       msg: _wire2api_String(arr[3]),
     );
+  }
+
+  LogLevel _wire2api_log_level(dynamic raw) {
+    return LogLevel.values[raw];
   }
 
   MyClass _wire2api_my_class(dynamic raw) {

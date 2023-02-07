@@ -7,7 +7,7 @@ use log::{error, info, warn, Log, Metadata, Record};
 use parking_lot::RwLock;
 use simplelog::*;
 
-use crate::api::LogEntry;
+use crate::api::{LogEntry, LogLevel};
 
 static INIT_LOGGER_ONCE: Once = Once::new();
 
@@ -98,11 +98,11 @@ impl SendToDartLogger {
             .as_millis() as i64;
 
         let level = match record.level() {
-            Level::Trace => Self::LEVEL_TRACE,
-            Level::Debug => Self::LEVEL_DEBUG,
-            Level::Info => Self::LEVEL_INFO,
-            Level::Warn => Self::LEVEL_WARN,
-            Level::Error => Self::LEVEL_ERROR,
+            Level::Trace => LogLevel::Trace,
+            Level::Debug => LogLevel::Debug,
+            Level::Info => LogLevel::Info,
+            Level::Warn => LogLevel::Warn,
+            Level::Error => LogLevel::Error,
         };
 
         let tag = record.file().unwrap_or_else(|| record.target()).to_owned();
@@ -116,12 +116,6 @@ impl SendToDartLogger {
             msg,
         }
     }
-
-    const LEVEL_TRACE: i32 = 5000;
-    const LEVEL_DEBUG: i32 = 10000;
-    const LEVEL_INFO: i32 = 20000;
-    const LEVEL_WARN: i32 = 30000;
-    const LEVEL_ERROR: i32 = 40000;
 }
 
 impl Log for SendToDartLogger {
