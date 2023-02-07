@@ -1,3 +1,7 @@
+## 1.3.0-dev.0
+
+ - **FEAT**: trigger version.
+
 ## 1.2.0
 
  - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
