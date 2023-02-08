@@ -1,3 +1,7 @@
+## 1.5.0
+
+ - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
+
 ## 1.5.0-dev.2
 
  - **FEAT**: add precise log control.
